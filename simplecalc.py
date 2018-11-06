@@ -77,27 +77,32 @@ class Interpreter(object):
         left=self.current_token
         self.eat(INTEGER)
 
-        op=self.current_token
-        if op.type==PLUS:
-            self.eat(PLUS)
-        elif op.type==MINUS:
-            self.eat(MINUS)
-        elif op.type==MULT:
-            self.eat(MULT)
-        elif op.type==DIV:
-            self.eat(DIV)
-        
-        right=self.current_token
-        self.eat(INTEGER)
+        while True:
+            op=self.current_token
+            if op.type==PLUS:
+                self.eat(PLUS)
+            elif op.type==MINUS:
+                self.eat(MINUS)
+            elif op.type==MULT:
+                self.eat(MULT)
+            elif op.type==DIV:
+                self.eat(DIV)
+            
+            right=self.current_token
+            self.eat(INTEGER)
 
-        if op.type==PLUS:
-            result=left.value+right.value
-        elif op.type==MINUS:
-            result=left.value-right.value
-        elif op.type==MULT:
-            result=left.value*right.value
-        elif op.type==DIV:
-            result=left.value/right.value
+            if op.type==PLUS:
+                result=left.value+right.value
+            elif op.type==MINUS:
+                result=left.value-right.value
+            elif op.type==MULT:
+                result=left.value*right.value
+            elif op.type==DIV:
+                result=left.value/right.value
+            
+            left=Token(INTEGER,result)
+            if self.current_token.value is None:
+                break
         return result
 
 def main():
