@@ -71,13 +71,18 @@ class Interpreter(object):
         else:
             self.error()
     
+    def term(self):
+        token = self.current_token
+        self.eat(INTEGER)
+        return token
     def expr(self):
         self.current_token = self.get_next_token()
 
-        left=self.current_token
-        self.eat(INTEGER)
+        left=self.term()
 
         while True:
+            if self.current_token.value is None:
+                break
             op=self.current_token
             if op.type==PLUS:
                 self.eat(PLUS)
@@ -88,8 +93,7 @@ class Interpreter(object):
             elif op.type==DIV:
                 self.eat(DIV)
             
-            right=self.current_token
-            self.eat(INTEGER)
+            right=self.term()
 
             if op.type==PLUS:
                 result=left.value+right.value
